@@ -71,7 +71,6 @@ namespace TextRPG
         {
             int cmd;
 
-            //cmd = Convert.ToInt32(Console.ReadLine());
             int.TryParse(Console.ReadLine(), out cmd);
 
             return cmd;
@@ -141,6 +140,7 @@ namespace TextRPG
                 Console.WriteLine();
                 Console.WriteLine("원하시는 행동을 입력해주세요.");
                 Console.Write(">>");
+                Console.WriteLine();
                 cmd = Command();
 
                 if (cmd == 0)
@@ -243,6 +243,7 @@ namespace TextRPG
                 Console.WriteLine();
                 Console.WriteLine("원하시는 행동을 입력해주세요.");
                 Console.Write(">>");
+                Console.WriteLine();
                 Console.WriteLine("0. 나가기");
 
                 cmd = Command();
@@ -318,6 +319,7 @@ namespace TextRPG
                 Console.WriteLine();
                 Console.WriteLine("원하시는 행동을 입력해주세요.");
                 Console.Write(">>");
+                Console.WriteLine();
                 Console.WriteLine("1. 장착 관리");
                 Console.WriteLine("0. 나가기");
 
@@ -390,6 +392,7 @@ namespace TextRPG
                 Console.WriteLine();
                 Console.WriteLine("원하시는 행동을 입력해주세요.");
                 Console.Write(">>");
+                Console.WriteLine();
                 Console.WriteLine("0. 나가기");
 
                 cmd = Command();
@@ -423,6 +426,89 @@ namespace TextRPG
                 }
             }
             
+        }
+
+        //상점 판매기능
+        static void ItemSell(stat myStat, List<itemStat> itemList)
+        {
+            int cmd;
+
+            while (true)
+            {
+                Console.WriteLine("상점 - 아이템 판매");
+                Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다.");
+                Console.WriteLine();
+                Console.WriteLine("[보유골드]");
+                Console.WriteLine("{0} G", myStat.Gold);
+                Console.WriteLine();
+                Console.WriteLine("[아이템 목록]");
+
+                for (int i = 0; i < itemList.Count; i++)
+                {
+                    //보유한 아이템 표시
+                    if (itemList[i].HasItem == true)
+                    {
+                        Console.Write("- ");
+                        Console.Write(" {0} ", itemList[i].ItemID);
+                        //아이템 장착 표시
+                        if (itemList[i].EquippedItem == true)
+                        {
+                            Console.Write("[E]");
+                        }
+                        Console.Write(itemList[i].ItemName);
+                        Console.Write(" | ");
+                        //장비가 실제로 보유한 능력치만 표기
+                        if (itemList[i].PlusAtk != 0)
+                        {
+                            Console.Write("공격력 + {0} | ", itemList[i].PlusAtk);
+                        }
+
+                        if (itemList[i].PlusDef != 0)
+                        {
+                            Console.Write("방어력 + {0} | ", itemList[i].PlusDef);
+                        }
+
+                        if (itemList[i].PlusHP != 0)
+                        {
+                            Console.Write("체력 + {0} | ", itemList[i].PlusHP);
+                        }
+                        Console.Write(itemList[i].ItemDescription);
+                        Console.WriteLine();
+
+                    }
+                }
+                Console.WriteLine();
+                Console.WriteLine("원하시는 행동을 입력해주세요.");
+                Console.Write(">>");
+                Console.WriteLine();
+                Console.WriteLine("0. 나가기");
+
+                cmd = Command();
+                for (int i = 0; i < itemList.Count; i++)
+                {
+                    if (cmd == itemList[i].ItemID && itemList[i].HasItem == true)
+                    {
+                        itemList[i].HasItem = false;
+                        myStat.Gold = (float)(myStat.Gold + (itemList[i].SellingGold * 0.85));
+                        Console.WriteLine("구매를 완료했습니다");
+                    }
+                    if (cmd == 0)
+                    {
+                        break;
+                    }
+
+                }
+                if (cmd == 0)
+                {
+                    break;
+                }
+                else
+                {
+                    WrongCommand();
+                    continue;
+                }
+            }
+
         }
 
         //상점기능
@@ -474,7 +560,9 @@ namespace TextRPG
                 Console.WriteLine();
                 Console.WriteLine("원하시는 행동을 입력해주세요.");
                 Console.Write(">>");
+                Console.WriteLine();
                 Console.WriteLine("1. 아이템 구매");
+                Console.WriteLine("2. 아이템 판매");
                 Console.WriteLine("0. 나가기");
 
                 cmd = Command();
@@ -486,7 +574,10 @@ namespace TextRPG
                 {
                     ItemBuy(myStat, itemList);
                 }
-
+                else if (cmd == 2)
+                {
+                    ItemSell(myStat, itemList);
+                }
                 else
                 {
                     WrongCommand();
@@ -507,6 +598,7 @@ namespace TextRPG
                 Console.WriteLine();
                 Console.WriteLine("원하시는 행동을 입력해주세요.");
                 Console.Write(">>");
+                Console.WriteLine();
                 Console.WriteLine("1. 휴식하기");
                 Console.WriteLine("0. 나가기");
                 cmd = Command();
@@ -555,6 +647,7 @@ namespace TextRPG
 
                 Console.WriteLine("원하시는 행동을 입력해주세요.");
                 Console.Write(">>");
+                Console.WriteLine();
 
                 cmd = Command();
                 if (cmd == 0)
@@ -794,6 +887,7 @@ namespace TextRPG
                 Console.WriteLine("5. 휴식하기");
                 Console.WriteLine("원하시는 행동을 입력해주세요.");
                 Console.Write(">>");
+                Console.WriteLine();
                 command = Command();
 
                 if (command == 1)
