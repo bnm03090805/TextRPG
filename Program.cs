@@ -319,12 +319,18 @@ namespace TextRPG2
 
                     else
                     {
-                        if(myItems[myItems.FindIndex(x => x.ItemID.Equals(cmd))].EItem == false)
+                        if (myItems[myItems.FindIndex(x => x.ItemID.Equals(cmd))].EItem == false)
                         {
                             Console.WriteLine();
+                            Console.WriteLine();
+
+                            var find = myItems.FindAll(x => x.ItemType == myItems[myItems.FindIndex(y => y.ItemID.Equals(cmd))].ItemType);
+                            foreach (var item in find)
+                            {
+                                item.EItem = false;
+                            }
                             Console.WriteLine("{0} 장착", myItems[myItems.FindIndex(x => x.ItemID.Equals(cmd))].ItemName);
                             myItems[myItems.FindIndex(x => x.ItemID.Equals(cmd))].EItem = true;
-                            
                             Console.WriteLine();
                         }
 
@@ -882,6 +888,10 @@ namespace TextRPG2
             List<item> myItems = new List<item>();
             EntireItem(entireItems);
             myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(1))]);
+            myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(2))]);
+            myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(3))]);
+            myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(4))]);
+            myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(5))]);
 
             while (true)
             {
