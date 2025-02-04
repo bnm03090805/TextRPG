@@ -5,3 +5,6 @@ C:\Users\user\source\repos\TextRPG\TextRPG\obj\Debug\TextRPG.csproj.AssemblyRefe
 C:\Users\user\source\repos\TextRPG\TextRPG\obj\Debug\TextRPG.csproj.CoreCompileInputs.cache
 C:\Users\user\source\repos\TextRPG\TextRPG\obj\Debug\TextRPG.exe
 C:\Users\user\source\repos\TextRPG\TextRPG\obj\Debug\TextRPG.pdb
+C:\Users\user\source\repos\TextRPG\TextRPG\bin\Debug\Newtonsoft.Json.dll
+C:\Users\user\source\repos\TextRPG\TextRPG\bin\Debug\Newtonsoft.Json.xml
+C:\Users\user\source\repos\TextRPG\TextRPG\obj\Debug\TextRPG.csproj.CopyComplete

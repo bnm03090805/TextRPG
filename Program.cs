@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace TextRPG2
 {
+
+    
 
     public class stat
     {
@@ -52,6 +56,7 @@ namespace TextRPG2
         public int ItemType { get { return itemType; } set { if (value == 1 || value == 2 || value == 3) itemType = value; } } // 1 무기 2 방어구 3 신발
         public bool EItem { get { return eItem; } set { eItem = value; } }
 
+        //자식 클래스의 능력치 관련 함수
         public abstract int PlusValue();
 
     }
@@ -92,6 +97,51 @@ namespace TextRPG2
             //throw new NotImplementedException();
 
             return plusHP;
+        }
+
+    }
+
+    public class SaveData
+    {
+        public stat myStat;
+        public List<int> myitemsID;
+    }
+
+    public class SaveLoadSys
+    {
+
+        
+
+        public static void SaveData(SaveData data, String FilePath)
+        {
+
+
+            try
+            {
+                string userData = JsonConvert.SerializeObject(data, Newtonsoft.Json.Formatting.Indented);
+                File.WriteAllText(FilePath, userData);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        public static SaveData LoadData(String FilePath)
+        {
+            if (File.Exists(FilePath))
+            {
+                string userData = File.ReadAllText(FilePath);
+
+                SaveData Save =  JsonConvert.DeserializeObject<SaveData>(userData);
+
+                return Save;
+            }
+            else
+            {
+                return null;
+            }
+
         }
 
     }
@@ -880,18 +930,50 @@ namespace TextRPG2
 
         }
 
+        
+
         static void Main(string[] args)
         {
+
+            string FilePath = @"C:\Users\user\source\repos\TextRPG\TextRPG\save.json";
+
             int command;
-            stat myStat = new stat() { Level = 1, Name = "kim", JopClass = " 전사", Atk = 10, Def = 5, Hp = 100, Gold = 1500, ResultAtk = 10, ResultDef = 5, ResultHp = 100, NowHp = 100, Exp = 0 };
+            stat myStat = new stat();
             List<item> entireItems = new List<item>();
             List<item> myItems = new List<item>();
+            List<int> myItemsID = new List<int>();
             EntireItem(entireItems);
-            myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(1))]);
-            myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(2))]);
-            myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(3))]);
-            myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(4))]);
-            myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(5))]);
+            //저장된 파일이 잇다면 불러오기
+            if (File.Exists(FilePath))
+            {                
+                SaveData loadData = SaveLoadSys.LoadData(FilePath);
+                myStat = loadData.myStat;
+                myItemsID = loadData.myitemsID;
+                for(int i = 0; i < myItemsID.Count; i++)
+                {
+                    //Console.WriteLine("for문돔");
+                    myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(i+1))]);
+                }
+            }
+            //없다면 초기셋팅
+            else
+            {
+                myStat.Level = 1;
+                myStat.Name = "kim";
+                myStat.JopClass = "전사";
+                myStat.Atk = 10;
+                myStat.Def = 5;
+                myStat.Hp = 100;
+                myStat.Gold = 1500;
+                myStat.ResultAtk = 10;
+                myStat.ResultDef = 5;
+                myStat.ResultHp = 100;
+                myStat.NowHp = 100;
+                myStat.Exp = 0;
+                
+                myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(1))]);
+                myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(2))]);
+            }
 
             while (true)
             {
@@ -904,6 +986,7 @@ namespace TextRPG2
                 Console.WriteLine("3. 상점");
                 Console.WriteLine("4. 던전입장");
                 Console.WriteLine("5. 휴식하기");
+                Console.WriteLine("6. 저장하기");
                 Console.WriteLine("원하시는 행동을 입력해주세요.");
                 Console.Write(">>");
                 Console.WriteLine();
@@ -945,6 +1028,23 @@ namespace TextRPG2
                     Console.WriteLine();
                     Console.WriteLine();
                     Rest(myStat);
+                    continue;
+                }
+
+                if (command == 6)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    myItemsID.Clear();
+                    for (int i = 0; i < myItems.Count; i++)
+                    {
+                        myItemsID.Add(myItems[i].ItemID);
+                    }
+                    SaveData saveData = new SaveData { myStat = myStat, myitemsID = myItemsID };
+                    SaveLoadSys.SaveData(saveData, FilePath);
+                    Console.WriteLine("저장이 완료 되었습니다");
+                    Console.WriteLine();
+                    Console.WriteLine();
                     continue;
                 }
 
