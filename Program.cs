@@ -189,17 +189,22 @@ namespace TextRPG2
             items.Add(new weapon() { ItemID = 2, ItemName = "스파르타의 창", PlusAtk = 7, ItemDescription = "스파르타의 전사들이 사용했다는 전설의 창입니다", SellingGold = 2500, ItemType = 1, EItem = false });
             items.Add(new weapon() { ItemID = 3, ItemName = "낡은 검", PlusAtk = 2, ItemDescription = "쉽게 볼 수 있는 낡은 검 입니다.", SellingGold = 600, ItemType = 1, EItem = false });
             items.Add(new weapon() { ItemID = 6, ItemName = "청동 도끼", PlusAtk = 5, ItemDescription = "어디선가 사용햇던거 같은 도끼입니다.", SellingGold = 1500, ItemType = 1, EItem = false });
-            items.Add(new weapon() { ItemID = 10, ItemName = "치트 검", PlusAtk = 999, ItemDescription = "모든 던전을 통과하게 해주는 검입니다.", SellingGold = 9000, ItemType = 1, EItem = false });
+            items.Add(new weapon() { ItemID = 10, ItemName = "치트 검", PlusAtk = 999, ItemDescription = "돈복사 버그를 사용하게 해주는 검입니다.", SellingGold = 99999, ItemType = 1, EItem = false });
             items.Add(new armor() { ItemID = 1, ItemName = "무쇠갑옷", PlusDef = 8, ItemDescription = "무쇠로 만들어져 튼튼한 갑옷입니다", SellingGold = 1500, ItemType = 2, EItem = false });
             items.Add(new armor() { ItemID = 4, ItemName = "수련자갑옷", PlusDef = 5, ItemDescription = "수련에 도움을 주는 갑옷입니다.", SellingGold = 1000, ItemType = 2, EItem = false });
             items.Add(new armor() { ItemID = 5, ItemName = "스파르타갑옷", PlusDef = 15, ItemDescription = "스파르타의 전사들이 사용했다는 전설의 갑옷입니다.", SellingGold = 3500, ItemType = 2, EItem = false });
+            items.Add(new armor() { ItemID = 11, ItemName = "치트 방어구", PlusDef = 999, ItemDescription = "모든 던전을 통과하게 해주는 방어구입니다.", SellingGold = 99999, ItemType = 2, EItem = false });
             items.Add(new shoes() { ItemID = 7, ItemName = "낡은 신발", PlusHP = 3, ItemDescription = "낡은 신발입니다.", SellingGold = 300, ItemType = 3, EItem = false });
             items.Add(new shoes() { ItemID = 8, ItemName = "천 신발", PlusHP = 8, ItemDescription = "천으로 된 신발입니다.", SellingGold = 800, ItemType = 3, EItem = false });
             items.Add(new shoes() { ItemID = 9, ItemName = "고급 신발", PlusHP = 15, ItemDescription = "고급지게 생긴 신발입니다.", SellingGold = 1500, ItemType = 3, EItem = false });
+
+            //아이템 ID로 정렬
+            items.Sort((x1, x2) => x1.ItemID.CompareTo(x2.ItemID));
         }
         static void NowInventory(List<item> myItems)
         {
             int cmd;
+            myItems.Sort((x1, x2) => x1.ItemID.CompareTo(x2.ItemID));
 
             while (true)
             {
@@ -247,6 +252,11 @@ namespace TextRPG2
                 else if (cmd == 1)
                 {
                     EquimentSetting(myItems);
+                }
+
+                else
+                {
+                    WrongCommand();
                 }
             }
         }
@@ -302,21 +312,28 @@ namespace TextRPG2
                 {
                     if (myItems.FindIndex(x => x.ItemID.Equals(cmd)) == -1)
                     {
+                        Console.WriteLine();
                         Console.WriteLine("잘못된 입력입니다");
+                        Console.WriteLine();
                     }
 
                     else
                     {
                         if(myItems[myItems.FindIndex(x => x.ItemID.Equals(cmd))].EItem == false)
                         {
-                            Console.WriteLine("장착");
+                            Console.WriteLine();
+                            Console.WriteLine("{0} 장착", myItems[myItems.FindIndex(x => x.ItemID.Equals(cmd))].ItemName);
                             myItems[myItems.FindIndex(x => x.ItemID.Equals(cmd))].EItem = true;
+                            
+                            Console.WriteLine();
                         }
 
                         else if(myItems[myItems.FindIndex(x => x.ItemID.Equals(cmd))].EItem == true)
                         {
-                            Console.WriteLine("해제");
+                            Console.WriteLine();
+                            Console.WriteLine("{0} 해제", myItems[myItems.FindIndex(x => x.ItemID.Equals(cmd))].ItemName);
                             myItems[myItems.FindIndex(x => x.ItemID.Equals(cmd))].EItem = false;
+                            Console.WriteLine();
                         }
                     }
 
@@ -364,6 +381,7 @@ namespace TextRPG2
                     Console.WriteLine();
                 }
 
+                Console.WriteLine("=================================구매완료=================================");
                 foreach (var item in compare)
                 {
                     Console.Write("- ");
@@ -457,8 +475,7 @@ namespace TextRPG2
                     Console.WriteLine();
                 }
 
-                Console.WriteLine();
-
+                Console.WriteLine("=================================구매완료=================================");
                 foreach (var item in compare)
                 {
                     Console.Write("- ");
@@ -553,7 +570,7 @@ namespace TextRPG2
                     }
                     Console.Write(item.ItemDescription);
                     Console.Write(" | ");
-                    Console.Write("구매완료");
+                    Console.Write("판매가 : {0} G", item.SellingGold * 0.85);
                     Console.WriteLine();
                 }
 
@@ -709,13 +726,11 @@ namespace TextRPG2
             {
                 //던전 클리어
                 DungenClear(myStat, cmd);
-                //Console.WriteLine("던전클리어");
             }
             else if (cmd == 1 && myStat.Def < 5 && SuccessProbability > 40)
             {
                 //던전 클리어
                 DungenClear(myStat, cmd);
-                //Console.WriteLine("던전클리어");
             }
             else if (cmd == 1 && myStat.Def < 5 && SuccessProbability < 40)
             {
@@ -726,13 +741,11 @@ namespace TextRPG2
             {
                 // 던전 클리어
                 DungenClear(myStat, cmd);
-                //Console.WriteLine("던전클리어");
             }
             else if (cmd == 2 && myStat.Def < 11 && SuccessProbability > 40)
             {
                 //던전 클리어
                 DungenClear(myStat, cmd);
-                //Console.WriteLine("던전클리어");
             }
             else if (cmd == 2 && myStat.Def < 11 && SuccessProbability < 40)
             {
@@ -743,13 +756,11 @@ namespace TextRPG2
             {
                 // 던전 클리어
                 DungenClear(myStat, cmd);
-                //Console.WriteLine("던전클리어");
             }
             else if (cmd == 3 && myStat.Def < 17 && SuccessProbability > 40)
             {
                 //던전 클리어
                 DungenClear(myStat, cmd);
-                //Console.WriteLine("던전클리어");
             }
             else if (cmd == 3 && myStat.Def < 17 && SuccessProbability < 40)
             {
@@ -779,7 +790,6 @@ namespace TextRPG2
                     Console.WriteLine("쉬운 던전을 클리어 하였습니다");
                     int hppro = new Random().Next(20 - (myStat.Def - 5), 35 - (myStat.Def - 5));
                     int goldluk = new Random().Next(myStat.ResultAtk, myStat.ResultAtk * 2);
-                    //Console.WriteLine(goldluk);
                     myStat.Gold = (float)(myStat.Gold + 1000 + (1000 * (goldluk * 0.01)));
                     myStat.NowHp = myStat.NowHp - hppro;
                     Console.WriteLine("[탐험 결과]");
@@ -871,7 +881,6 @@ namespace TextRPG2
             List<item> entireItems = new List<item>();
             List<item> myItems = new List<item>();
             EntireItem(entireItems);
-            myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(2))]);
             myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(1))]);
 
             while (true)
