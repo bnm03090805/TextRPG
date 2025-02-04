@@ -49,7 +49,6 @@ namespace TextRPG2
         public int ItemID { get { return itemID; } set { itemID = value; } }
         public string ItemDescription { get { return itemDescription; } set { itemDescription = value; } }
         public int SellingGold { get { return sellingGold; } set { sellingGold = value; } }
-
         public int ItemType { get { return itemType; } set { if (value == 1 || value == 2 || value == 3) itemType = value; } } // 1 무기 2 방어구 3 신발
         public bool EItem { get { return eItem; } set { eItem = value; } }
 
@@ -98,7 +97,7 @@ namespace TextRPG2
     }
     class Program
     {
-        static public int Command()
+        static int Command()
         {
             int cmd;
 
@@ -107,7 +106,7 @@ namespace TextRPG2
             return cmd;
         }
 
-        static public void WrongCommand()
+        static void WrongCommand()
         {
             Console.WriteLine();
             Console.WriteLine("잘못된 입력입니다");
@@ -115,7 +114,7 @@ namespace TextRPG2
             Console.WriteLine();
         }
 
-        static public void StatusChcek(stat myStat, List<item> myItems)
+        static void StatusChcek(stat myStat, List<item> myItems)
         {
             int atkUp = 0;
             int defUp = 0;
@@ -153,7 +152,7 @@ namespace TextRPG2
             Console.WriteLine("Gold : {0} G", myStat.Gold);
         }
 
-        static public void Status(stat myStat, List<item> myItems)
+        static void Status(stat myStat, List<item> myItems)
         {
             while (true)
             {
@@ -185,7 +184,7 @@ namespace TextRPG2
 
 
 
-        static public void EntireItem(List<item> items)
+        static void EntireItem(List<item> items)
         {
             items.Add(new weapon() { ItemID = 2, ItemName = "스파르타의 창", PlusAtk = 7, ItemDescription = "스파르타의 전사들이 사용했다는 전설의 창입니다", SellingGold = 2500, ItemType = 1, EItem = false });
             items.Add(new weapon() { ItemID = 3, ItemName = "낡은 검", PlusAtk = 2, ItemDescription = "쉽게 볼 수 있는 낡은 검 입니다.", SellingGold = 600, ItemType = 1, EItem = false });
@@ -198,7 +197,7 @@ namespace TextRPG2
             items.Add(new shoes() { ItemID = 8, ItemName = "천 신발", PlusHP = 8, ItemDescription = "천으로 된 신발입니다.", SellingGold = 800, ItemType = 3, EItem = false });
             items.Add(new shoes() { ItemID = 9, ItemName = "고급 신발", PlusHP = 15, ItemDescription = "고급지게 생긴 신발입니다.", SellingGold = 1500, ItemType = 3, EItem = false });
         }
-        static public void NowInventory(List<item> myItems)
+        static void NowInventory(List<item> myItems)
         {
             int cmd;
 
@@ -265,7 +264,7 @@ namespace TextRPG2
                 for (int i = 0; i < myItems.Count; i++)
                 {
                     Console.Write("- ");
-                    Console.Write("{0} ", i + 1);
+                    Console.Write("{0} ", myItems[i].ItemID);
                     if (myItems[i].EItem == true)
                     {
                         Console.Write("[E]");
@@ -301,23 +300,23 @@ namespace TextRPG2
                 }
                 else
                 {
-                    for (int i = 0; i < myItems.Count; i++)
+                    if (myItems.FindIndex(x => x.ItemID.Equals(cmd)) == -1)
                     {
-                        if (cmd == i + 1 && myItems[i].EItem == false)
+                        Console.WriteLine("잘못된 입력입니다");
+                    }
+
+                    else
+                    {
+                        if(myItems[myItems.FindIndex(x => x.ItemID.Equals(cmd))].EItem == false)
                         {
                             Console.WriteLine("장착");
-                            myItems[i].EItem = true;
-                            break;
+                            myItems[myItems.FindIndex(x => x.ItemID.Equals(cmd))].EItem = true;
                         }
-                        else if (cmd == i + 1 && myItems[i].EItem == true)
+
+                        else if(myItems[myItems.FindIndex(x => x.ItemID.Equals(cmd))].EItem == true)
                         {
                             Console.WriteLine("해제");
-                            myItems[i].EItem = false;
-                            break;
-                        }
-                        else
-                        {
-
+                            myItems[myItems.FindIndex(x => x.ItemID.Equals(cmd))].EItem = false;
                         }
                     }
 
@@ -463,7 +462,7 @@ namespace TextRPG2
                 foreach (var item in compare)
                 {
                     Console.Write("- ");
-                    Console.Write(" {0} ", item.ItemID);
+                    //Console.Write(" {0} ", myItems.IndexOf(item)+1);
                     Console.Write(item.ItemName);
                     Console.Write(" | ");
                     if (item.ItemType == 1)
@@ -497,20 +496,22 @@ namespace TextRPG2
                 }
 
                 else
-                {
-                    foreach (var item in expect)
+                {                    
+                    if (items.FindIndex(x => x.ItemID.Equals(cmd)) == -1)
                     {
-                        if (cmd == item.ItemID && myStat.Gold >= item.SellingGold)
-                        {
-                            myStat.Gold = myStat.Gold - item.SellingGold;
-                            myItems.Add(items[items.FindIndex(Item => Item.ItemID.Equals(cmd))]);
-                            Console.WriteLine("구매를 완료했습니다");
-                        }
-                        else if (cmd == item.ItemID && myStat.Gold < item.SellingGold)
-                        {
-                            Console.WriteLine("Gold 가 부족합니다.");
-                        }
+                        Console.WriteLine("잘못된 입력입니다");
                     }
+
+                    else if (myStat.Gold >= items[items.FindIndex(x => x.ItemID.Equals(cmd))].SellingGold)
+                    {
+                        myStat.Gold = myStat.Gold - items[items.FindIndex(x => x.ItemID.Equals(cmd))].SellingGold;
+                        myItems.Add(items[items.FindIndex(Item => Item.ItemID.Equals(cmd))]);
+                        Console.WriteLine("구매를 완료했습니다");
+                    }
+                    else if (myStat.Gold < items[items.FindIndex(x => x.ItemID.Equals(cmd))].SellingGold)
+                    {
+                        Console.WriteLine("Gold 가 부족합니다.");
+                    }                    
                 }
             }
         }
@@ -570,14 +571,16 @@ namespace TextRPG2
 
                 else
                 {
-                    foreach (var item in compare)
+                    if (myItems.FindIndex(x => x.ItemID.Equals(cmd)) == -1)
                     {
-                        if (cmd == item.ItemID)
-                        {
-                            myStat.Gold = (float)(myStat.Gold + (item.SellingGold * 0.85));
-                            myItems.Remove(items[items.FindIndex(Item => Item.ItemID.Equals(cmd))]);
-                            Console.WriteLine("판매를 완료했습니다");
-                        }
+                        Console.WriteLine("잘못된 입력입니다");
+                    }
+
+                    else
+                    {
+                        myStat.Gold = (float)(myStat.Gold + (myItems[myItems.FindIndex(x => x.ItemID.Equals(cmd))].SellingGold * 0.85));
+                        myItems.Remove(myItems[myItems.FindIndex(x => x.ItemID.Equals(cmd))]);
+                        Console.WriteLine("판매를 완료했습니다");
                     }
                 }
             }
