@@ -8,9 +8,6 @@ using System.IO;
 
 namespace TextRPG2
 {
-
-    
-
     public class stat
     {
         private int level;
@@ -110,12 +107,8 @@ namespace TextRPG2
     public class SaveLoadSys
     {
 
-        
-
         public static void SaveData(SaveData data, String FilePath)
         {
-
-
             try
             {
                 string userData = JsonConvert.SerializeObject(data, Newtonsoft.Json.Formatting.Indented);
@@ -147,6 +140,7 @@ namespace TextRPG2
     }
     class Program
     {
+        //명령어 입력
         static int Command()
         {
             int cmd;
@@ -156,6 +150,7 @@ namespace TextRPG2
             return cmd;
         }
 
+        //예외처리 텍스트부분
         static void WrongCommand()
         {
             Console.WriteLine();
@@ -164,6 +159,7 @@ namespace TextRPG2
             Console.WriteLine();
         }
 
+        //스테이터스 갱신
         static void StatusChcek(stat myStat, List<item> myItems)
         {
             int atkUp = 0;
@@ -202,6 +198,7 @@ namespace TextRPG2
             Console.WriteLine("Gold : {0} G", myStat.Gold);
         }
 
+        //스테이터스 확인 기능
         static void Status(stat myStat, List<item> myItems)
         {
             while (true)
@@ -232,8 +229,7 @@ namespace TextRPG2
             }
         }
 
-
-
+        //전체 아이템 세팅기능
         static void EntireItem(List<item> items)
         {
             items.Add(new weapon() { ItemID = 2, ItemName = "스파르타의 창", PlusAtk = 7, ItemDescription = "스파르타의 전사들이 사용했다는 전설의 창입니다", SellingGold = 2500, ItemType = 1, EItem = false });
@@ -251,6 +247,7 @@ namespace TextRPG2
             //아이템 ID로 정렬
             items.Sort((x1, x2) => x1.ItemID.CompareTo(x2.ItemID));
         }
+        //현재 현재인벤토리 확인기능
         static void NowInventory(List<item> myItems)
         {
             int cmd;
@@ -321,16 +318,19 @@ namespace TextRPG2
                 Console.WriteLine();
                 Console.WriteLine("[아이템 목록]");
                 Console.WriteLine();
+                //장비표시
                 for (int i = 0; i < myItems.Count; i++)
                 {
                     Console.Write("- ");
                     Console.Write("{0} ", myItems[i].ItemID);
+                    //장착한 장비표시
                     if (myItems[i].EItem == true)
                     {
                         Console.Write("[E]");
                     }
                     Console.Write(myItems[i].ItemName);
                     Console.Write(" | ");
+                    //무기타입별로 표시되는 능력치 표시
                     if (myItems[i].ItemType == 1)
                     {
                         Console.Write("공격력 + {0} | ", myItems[i].PlusValue());
@@ -360,13 +360,13 @@ namespace TextRPG2
                 }
                 else
                 {
+                    //입력한 커맨드가 없는 장비번호일경우
                     if (myItems.FindIndex(x => x.ItemID.Equals(cmd)) == -1)
                     {
                         Console.WriteLine();
                         Console.WriteLine("잘못된 입력입니다");
                         Console.WriteLine();
                     }
-
                     else
                     {
                         if (myItems[myItems.FindIndex(x => x.ItemID.Equals(cmd))].EItem == false)
@@ -374,11 +374,13 @@ namespace TextRPG2
                             Console.WriteLine();
                             Console.WriteLine();
 
+                            //장비장착전 장착할려는 장비와 같은타입의 모든 장비를 장착 해제
                             var find = myItems.FindAll(x => x.ItemType == myItems[myItems.FindIndex(y => y.ItemID.Equals(cmd))].ItemType);
                             foreach (var item in find)
                             {
                                 item.EItem = false;
                             }
+                            //장비 장착
                             Console.WriteLine("{0} 장착", myItems[myItems.FindIndex(x => x.ItemID.Equals(cmd))].ItemName);
                             myItems[myItems.FindIndex(x => x.ItemID.Equals(cmd))].EItem = true;
                             Console.WriteLine();
@@ -398,6 +400,7 @@ namespace TextRPG2
             }
         }
 
+        //상점기능
         static void Shop(stat myStat, List<item> items, List<item> myItems)
         {
             int cmd;
@@ -414,6 +417,7 @@ namespace TextRPG2
                 Console.WriteLine();
                 Console.WriteLine("[아이템 목록]");
 
+                //보유하지 않은 장비 표시
                 foreach (var item in expect)
                 {
                     Console.Write("- ");
@@ -437,6 +441,7 @@ namespace TextRPG2
                     Console.WriteLine();
                 }
 
+                //보유한 장비 표시
                 Console.WriteLine("=================================구매완료=================================");
                 foreach (var item in compare)
                 {
@@ -491,6 +496,7 @@ namespace TextRPG2
 
         }
 
+        //아이템 구매기능
         static void ItemBuy(stat myStat, List<item> items, List<item> myItems)
         {
             int cmd;
@@ -507,6 +513,7 @@ namespace TextRPG2
                 Console.WriteLine();
                 Console.WriteLine("[아이템 목록]");
 
+                //미보유 장비 표시
                 foreach (var item in expect)
                 {
                     Console.Write("- ");
@@ -531,6 +538,7 @@ namespace TextRPG2
                     Console.WriteLine();
                 }
 
+                //보유장비 표시
                 Console.WriteLine("=================================구매완료=================================");
                 foreach (var item in compare)
                 {
@@ -589,6 +597,7 @@ namespace TextRPG2
             }
         }
 
+        //아이템 판매기능
         static void ItemSell(stat myStat, List<item> items, List<item> myItems)
         {
             int cmd;
@@ -660,6 +669,7 @@ namespace TextRPG2
 
         }
 
+        //휴식기능
         static void Rest(stat myStat)
         {
             int cmd;
@@ -901,6 +911,7 @@ namespace TextRPG2
 
         }
 
+        //던전실패
         static void DungeonFail(stat myStat)
         {
             int cmd;
@@ -930,20 +941,16 @@ namespace TextRPG2
 
         }
 
-        
-
         static void Main(string[] args)
         {
-
             string FilePath = @"C:\Users\user\source\repos\TextRPG\TextRPG\save.json";
-
             int command;
             stat myStat = new stat();
             List<item> entireItems = new List<item>();
             List<item> myItems = new List<item>();
             List<int> myItemsID = new List<int>();
             EntireItem(entireItems);
-            //저장된 파일이 잇다면 불러오기
+            //저장된 파일이 있다면 불러오기
             if (File.Exists(FilePath))
             {                
                 SaveData loadData = SaveLoadSys.LoadData(FilePath);
@@ -951,11 +958,11 @@ namespace TextRPG2
                 myItemsID = loadData.myitemsID;
                 for(int i = 0; i < myItemsID.Count; i++)
                 {
-                    //Console.WriteLine("for문돔");
                     myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(i+1))]);
+                    //myItems[i].EItem = true;
                 }
             }
-            //없다면 초기셋팅
+            //없다면 초기세팅
             else
             {
                 myStat.Level = 1;
