@@ -97,11 +97,16 @@ namespace TextRPG2
         }
 
     }
+    public class SaveItemData
+    {
+        public int itemID;
+        public bool Eitem;
+    }
 
     public class SaveData
     {
         public stat myStat;
-        public List<int> myitemsID;
+        public List<SaveItemData> saveItemData;
     }
 
     public class SaveLoadSys
@@ -196,6 +201,7 @@ namespace TextRPG2
             Console.WriteLine("최대체력 : {0} (+{1})", myStat.ResultHp, hpUp);
             Console.WriteLine("현재체력 : {0}", myStat.NowHp);
             Console.WriteLine("Gold : {0} G", myStat.Gold);
+            Console.WriteLine("경험치 : {0} / {1}", myStat.Exp,myStat.Level*2);
         }
 
         //스테이터스 확인 기능
@@ -715,12 +721,14 @@ namespace TextRPG2
         static void ExpUp(stat myStat)
         {
             myStat.Exp++;
-            if (myStat.Exp == myStat.Level)
+            if (myStat.Exp == myStat.Level*2)
             {
                 myStat.Level++;
                 myStat.Exp = 0;
                 myStat.Atk++;
                 myStat.Def++;
+                Console.WriteLine();
+                Console.WriteLine();
                 Console.WriteLine("레벨이 상승했습니다");
                 Console.WriteLine("레벨 : {0} -> {1}", myStat.Level - 1, myStat.Level);
                 Console.WriteLine("공격력 :  {0} -> {1}", myStat.Atk - 1, myStat.Atk);
@@ -948,18 +956,38 @@ namespace TextRPG2
             stat myStat = new stat();
             List<item> entireItems = new List<item>();
             List<item> myItems = new List<item>();
-            List<int> myItemsID = new List<int>();
+            List<SaveItemData> saveItemData = new List<SaveItemData>();
             EntireItem(entireItems);
+
             //저장된 파일이 있다면 불러오기
             if (File.Exists(FilePath))
             {                
                 SaveData loadData = SaveLoadSys.LoadData(FilePath);
                 myStat = loadData.myStat;
-                myItemsID = loadData.myitemsID;
-                for(int i = 0; i < myItemsID.Count; i++)
+                saveItemData = loadData.saveItemData;
+                int t = 0;
+                while (true)
                 {
-                    myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(i+1))]);
+                    
+
+                    if (saveItemData[t].itemID == 0)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(saveItemData[t].itemID)) + 1]);
+                        myItems[t].EItem = saveItemData[t].Eitem;
+
+                        t = t + 1;
+                    }
+
+                }
+                for(int i = 0; i < saveItemData.Count; i++)
+                {
+                    //myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(i+1))]);
                     //myItems[i].EItem = true;
+                   
                 }
             }
             //없다면 초기세팅
@@ -980,8 +1008,12 @@ namespace TextRPG2
                 
                 myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(1))]);
                 myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(2))]);
-            }
 
+                for (int i = 0; i < entireItems.Count; i++)
+                {
+                    saveItemData.Add(new SaveItemData { Eitem = false, itemID = 0 });
+                }
+            }
             while (true)
             {
                 Console.WriteLine();
@@ -1042,12 +1074,12 @@ namespace TextRPG2
                 {
                     Console.WriteLine();
                     Console.WriteLine();
-                    myItemsID.Clear();
                     for (int i = 0; i < myItems.Count; i++)
                     {
-                        myItemsID.Add(myItems[i].ItemID);
+                        saveItemData[i].itemID = myItems[i].ItemID;
+                        saveItemData[i].Eitem = myItems[i].EItem;
                     }
-                    SaveData saveData = new SaveData { myStat = myStat, myitemsID = myItemsID };
+                    SaveData saveData = new SaveData { myStat = myStat, saveItemData = saveItemData};
                     SaveLoadSys.SaveData(saveData, FilePath);
                     Console.WriteLine("저장이 완료 되었습니다");
                     Console.WriteLine();
