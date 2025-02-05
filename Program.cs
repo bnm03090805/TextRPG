@@ -796,47 +796,47 @@ namespace TextRPG2
         {
             int SuccessProbability = new Random().Next(1, 100);
 
-            if (cmd == 1 && myStat.Def >= 5)
+            if (cmd == 1 && myStat.ResultDef >= 5)
             {
                 //던전 클리어
                 DungenClear(myStat, cmd);
             }
-            else if (cmd == 1 && myStat.Def < 5 && SuccessProbability > 40)
+            else if (cmd == 1 && myStat.ResultDef < 5 && SuccessProbability > 40)
             {
                 //던전 클리어
                 DungenClear(myStat, cmd);
             }
-            else if (cmd == 1 && myStat.Def < 5 && SuccessProbability < 40)
+            else if (cmd == 1 && myStat.ResultDef < 5 && SuccessProbability < 40)
             {
                 //던전 실패
                 DungeonFail(myStat);
             }
-            else if (cmd == 2 && myStat.Def >= 11)
+            else if (cmd == 2 && myStat.ResultDef >= 11)
             {
                 // 던전 클리어
                 DungenClear(myStat, cmd);
             }
-            else if (cmd == 2 && myStat.Def < 11 && SuccessProbability > 40)
+            else if (cmd == 2 && myStat.ResultDef < 11 && SuccessProbability > 40)
             {
                 //던전 클리어
                 DungenClear(myStat, cmd);
             }
-            else if (cmd == 2 && myStat.Def < 11 && SuccessProbability < 40)
+            else if (cmd == 2 && myStat.ResultDef < 11 && SuccessProbability < 40)
             {
                 //던전 실패
                 DungeonFail(myStat);
             }
-            else if (cmd == 3 && myStat.Def >= 17)
+            else if (cmd == 3 && myStat.ResultDef >= 17)
             {
                 // 던전 클리어
                 DungenClear(myStat, cmd);
             }
-            else if (cmd == 3 && myStat.Def < 17 && SuccessProbability > 40)
+            else if (cmd == 3 && myStat.ResultDef < 17 && SuccessProbability > 40)
             {
                 //던전 클리어
                 DungenClear(myStat, cmd);
             }
-            else if (cmd == 3 && myStat.Def < 17 && SuccessProbability < 40)
+            else if (cmd == 3 && myStat.ResultDef < 17 && SuccessProbability < 40)
             {
                 DungeonFail(myStat);
             }
@@ -853,7 +853,7 @@ namespace TextRPG2
             int command;
             float hptemp = myStat.NowHp;
             float goldtemp = myStat.Gold;
-
+            int hppro = 0;
 
             while (true)
             {
@@ -862,7 +862,15 @@ namespace TextRPG2
                 if (cmd == 1)
                 {
                     Console.WriteLine("쉬운 던전을 클리어 하였습니다");
-                    int hppro = new Random().Next(20 - (myStat.Def - 5), 35 - (myStat.Def - 5));
+                    if(myStat.ResultDef - 5 >= 35)
+                    {
+                        hppro = 0;
+                    }
+
+                    else
+                    {
+                        hppro = new Random().Next(20 - (myStat.ResultDef - 5), 35 - (myStat.ResultDef - 5));
+                    }
                     int goldluk = new Random().Next(myStat.ResultAtk, myStat.ResultAtk * 2);
                     myStat.Gold = (float)(myStat.Gold + 1000 + (1000 * (goldluk * 0.01)));
                     myStat.NowHp = myStat.NowHp - hppro;
@@ -875,7 +883,15 @@ namespace TextRPG2
                 else if (cmd == 2)
                 {
                     Console.WriteLine("일반 던전을 클리어 하였습니다");
-                    int hppro = new Random().Next(20 - (myStat.Def - 11), 35 - (myStat.Def - 11));
+                    if (myStat.ResultDef - 11 >= 35)
+                    {
+                        hppro = 0;
+                    }
+
+                    else
+                    {
+                        hppro = new Random().Next(20 - (myStat.ResultDef - 11), 35 - (myStat.ResultDef - 11));
+                    }
                     int goldluk = new Random().Next(myStat.ResultAtk, myStat.ResultAtk * 2);
                     myStat.Gold = (float)(myStat.Gold + 1700 + (1700 * (goldluk * 0.01)));
                     myStat.NowHp = myStat.NowHp - hppro;
@@ -886,7 +902,15 @@ namespace TextRPG2
                 else if (cmd == 3)
                 {
                     Console.WriteLine("어려운 던전을 클리어 하였습니다");
-                    int hppro = new Random().Next(20 - (myStat.Def - 17), 35 - (myStat.Def - 17));
+                    if (myStat.ResultDef - 17 >= 35)
+                    {
+                        hppro = 0;
+                    }
+
+                    else
+                    {
+                        hppro = new Random().Next(20 - (myStat.ResultDef - 17), 35 - (myStat.ResultDef - 17));
+                    }
                     int goldluk = new Random().Next(myStat.ResultAtk, myStat.ResultAtk * 2);
                     myStat.Gold = (float)(myStat.Gold + 2500 + (2500 * (goldluk * 0.01)));
                     myStat.NowHp = myStat.NowHp - hppro;
