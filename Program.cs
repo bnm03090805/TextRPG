@@ -976,18 +976,12 @@ namespace TextRPG2
                     }
                     else
                     {
-                        myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(saveItemData[t].itemID)) + 1]);
+                        myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(saveItemData[t].itemID))]);
                         myItems[t].EItem = saveItemData[t].Eitem;
 
                         t = t + 1;
                     }
 
-                }
-                for(int i = 0; i < saveItemData.Count; i++)
-                {
-                    //myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(i+1))]);
-                    //myItems[i].EItem = true;
-                   
                 }
             }
             //없다면 초기세팅
@@ -1005,9 +999,6 @@ namespace TextRPG2
                 myStat.ResultHp = 100;
                 myStat.NowHp = 100;
                 myStat.Exp = 0;
-                
-                myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(1))]);
-                myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(2))]);
 
                 for (int i = 0; i < entireItems.Count; i++)
                 {
