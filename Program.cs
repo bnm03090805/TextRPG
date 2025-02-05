@@ -688,6 +688,8 @@ namespace TextRPG2
         static void Rest(stat myStat)
         {
             int cmd;
+            float temphp;
+            float tempgold;
 
             while (true)
             {
@@ -703,17 +705,30 @@ namespace TextRPG2
                 cmd = Command();
                 if (cmd == 1 && myStat.Gold >= 500)
                 {
+                    Console.Clear();
                     Console.WriteLine("체력이 회복됩니다.");
+                    temphp = myStat.NowHp;
+                    tempgold = myStat.Gold;
                     myStat.NowHp = myStat.NowHp + 50;
                     myStat.Gold = myStat.Gold - 500;
                     if (myStat.NowHp > myStat.ResultHp)
                     {
                         myStat.NowHp = myStat.ResultHp;
                     }
+
+                    Console.WriteLine("HP : {0} -> {1}",temphp,myStat.NowHp);
+                    Console.WriteLine("Gold : {0} -> {1}", tempgold, myStat.Gold);
+                    int c;
+                    Console.WriteLine("AnyKey. 확인");
+                    c = Command();
                 }
                 else if (cmd == 1 && myStat.Gold < 500)
                 {
+                    Console.Clear();
                     Console.WriteLine("Gold 가 부족합니다.");
+                    int c;
+                    Console.WriteLine("AnyKey. 확인");
+                    c = Command();
                 }
                 else if (cmd == 0)
                 {
