@@ -601,11 +601,20 @@ namespace TextRPG2
                     {
                         myStat.Gold = myStat.Gold - items[items.FindIndex(x => x.ItemID.Equals(cmd))].SellingGold;
                         myItems.Add(items[items.FindIndex(Item => Item.ItemID.Equals(cmd))]);
+                        Console.Clear();
                         Console.WriteLine("구매를 완료했습니다");
+                        Console.WriteLine();
+                        Console.WriteLine("AnyKey. 나가기");
+                        Console.ReadKey();
                     }
                     else if (myStat.Gold < items[items.FindIndex(x => x.ItemID.Equals(cmd))].SellingGold)
                     {
+                        Console.Clear();
                         Console.WriteLine("Gold 가 부족합니다.");
+                        Console.WriteLine();
+                        Console.WriteLine("AnyKey. 나가기");
+                        Console.ReadKey();
+                        
                     }                    
                 }
             }
@@ -1003,7 +1012,7 @@ namespace TextRPG2
 
         static void Main(string[] args)
         {
-            string FilePath = @"C:\Users\user\source\repos\TextRPG\TextRPG\save.json";
+            string FilePath = @"..\..\save.json";
             int command;
             stat myStat = new stat();
             List<item> entireItems = new List<item>();
@@ -1017,23 +1026,19 @@ namespace TextRPG2
                 SaveData loadData = SaveLoadSys.LoadData(FilePath);
                 myStat = loadData.myStat;
                 saveItemData = loadData.saveItemData;
-                int t = 0;
-                while (true)
+                
+                for(int i = 0; i < saveItemData.Count; i++)
                 {
-                    
-
-                    if (t>=saveItemData.Count)
+                    if (saveItemData[i].itemID == 0)
                     {
                         break;
                     }
                     else
                     {
-                        myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(saveItemData[t].itemID))]);
-                        myItems[t].EItem = saveItemData[t].Eitem;
+                        myItems.Add(entireItems[entireItems.FindIndex(item => item.ItemID.Equals(saveItemData[i].itemID))]);
+                        myItems[i].EItem = saveItemData[i].Eitem;
 
-                        t = t + 1;
                     }
-
                 }
             }
             //없다면 초기세팅
@@ -1054,6 +1059,7 @@ namespace TextRPG2
 
                 for (int i = 0; i < entireItems.Count; i++)
                 {
+                    //아이템 save데이터에 전체 아이템갯수만큼 초기값 할당
                     saveItemData.Add(new SaveItemData { Eitem = false, itemID = 0 });
                 }
             }
