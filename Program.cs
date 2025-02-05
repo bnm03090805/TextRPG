@@ -211,6 +211,7 @@ namespace TextRPG2
             {
                 int cmd;
 
+                Console.Clear();
                 Console.WriteLine("상태 보기");
                 Console.WriteLine("캐릭터의 정보가 표시됩니다");
                 Console.WriteLine();
@@ -261,6 +262,7 @@ namespace TextRPG2
 
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("인벤토리");
                 Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다");
                 Console.WriteLine();
@@ -319,6 +321,7 @@ namespace TextRPG2
             int cmd;
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("인벤토리 - 장착 관리");
                 Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다");
                 Console.WriteLine();
@@ -413,8 +416,10 @@ namespace TextRPG2
             var compare = items.Intersect(myItems);
             var expect = items.Except(myItems);
 
+            
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("상점");
                 Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다.");
                 Console.WriteLine();
@@ -511,6 +516,7 @@ namespace TextRPG2
 
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("상점 - 아이템 구매");
                 Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다.");
                 Console.WriteLine();
@@ -612,6 +618,7 @@ namespace TextRPG2
 
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("상점 - 아이템 판매");
                 Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다.");
                 Console.WriteLine();
@@ -682,6 +689,7 @@ namespace TextRPG2
 
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("휴식하기");
                 Console.WriteLine("500 G 를 내면 체력을 회복할 수 있습니다 (현재체력 : {0} , 보유골드 : {1} G", myStat.NowHp, myStat.Gold);
                 Console.WriteLine();
@@ -743,6 +751,7 @@ namespace TextRPG2
 
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("던전입장");
                 Console.WriteLine("이곳에서 던전으로 들어가기 전 활동을 할 수 있습니다");
                 Console.WriteLine();
@@ -857,6 +866,7 @@ namespace TextRPG2
 
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("던전 클리어");
                 Console.WriteLine("축하합니다!!");
                 if (cmd == 1)
@@ -951,6 +961,7 @@ namespace TextRPG2
 
             while (true)
             {
+                Console.Clear();
                 myStat.NowHp = myStat.NowHp - (myStat.NowHp / 2);
                 Console.WriteLine("던전 실패하셧습니다");
                 Console.WriteLine("hp : {0} -> {1}", hptemp, myStat.NowHp);
@@ -1029,8 +1040,11 @@ namespace TextRPG2
                     saveItemData.Add(new SaveItemData { Eitem = false, itemID = 0 });
                 }
             }
+
+            
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine();
                 Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다.");
