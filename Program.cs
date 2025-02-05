@@ -1007,7 +1007,7 @@ namespace TextRPG2
                 {
                     
 
-                    if (saveItemData[t].itemID == 0)
+                    if (t>=saveItemData.Count)
                     {
                         break;
                     }
