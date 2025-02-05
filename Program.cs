@@ -158,10 +158,12 @@ namespace TextRPG2
         //예외처리 텍스트부분
         static void WrongCommand()
         {
-            Console.WriteLine();
+            Console.Clear();
             Console.WriteLine("잘못된 입력입니다");
+            Console.WriteLine("Anykey. 나가기");
             Console.WriteLine();
             Console.WriteLine();
+            Command();
         }
 
         //스테이터스 갱신
@@ -592,7 +594,7 @@ namespace TextRPG2
                 {                    
                     if (items.FindIndex(x => x.ItemID.Equals(cmd)) == -1)
                     {
-                        Console.WriteLine("잘못된 입력입니다");
+                        WrongCommand();
                     }
 
                     else if (myStat.Gold >= items[items.FindIndex(x => x.ItemID.Equals(cmd))].SellingGold)
@@ -668,7 +670,7 @@ namespace TextRPG2
                 {
                     if (myItems.FindIndex(x => x.ItemID.Equals(cmd)) == -1)
                     {
-                        Console.WriteLine("잘못된 입력입니다");
+                        WrongCommand();
                     }
 
                     else
@@ -1045,8 +1047,6 @@ namespace TextRPG2
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine();
-                Console.WriteLine();
                 Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다.");
                 Console.WriteLine("이곳에서 던전으로 들어가기전 활동을 할 수 있습니다.");
                 Console.WriteLine("1. 상태 보기");
@@ -1101,8 +1101,6 @@ namespace TextRPG2
 
                 if (command == 6)
                 {
-                    Console.WriteLine();
-                    Console.WriteLine();
                     for (int i = 0; i < myItems.Count; i++)
                     {
                         saveItemData[i].itemID = myItems[i].ItemID;
@@ -1113,6 +1111,8 @@ namespace TextRPG2
                     Console.WriteLine("저장이 완료 되었습니다");
                     Console.WriteLine();
                     Console.WriteLine();
+                    Console.WriteLine("AnyKey. 나가기");
+                    Command();
                     continue;
                 }
 
